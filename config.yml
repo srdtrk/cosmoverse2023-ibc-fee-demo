@@ -9,33 +9,41 @@ accounts:
   - 10000token
   - 100000000stake
 - name: anna
-  coins: 
+  coins:
   - 20000token
   - 200000000stake
-  mnemonic: antenna hen skate tooth during heart agent code exclude measure text math time budget industry cage eagle prosper program enter cruise join tragic one
+  mnemonic: antenna hen skate tooth during heart agent code exclude measure text math
+    time budget industry cage eagle prosper program enter cruise join tragic one
 - name: bo
-  coins: 
+  coins:
   - 20000token
   - 200000000stake
-  mnemonic: uphold tube excess primary night armor circle puzzle pet memory empower conduct blush hat glare tortoise into embody powder raise punch promote kidney catalog
+  mnemonic: uphold tube excess primary night armor circle puzzle pet memory empower
+    conduct blush hat glare tortoise into embody powder raise punch promote kidney
+    catalog
 - name: charlie
-  coins: 
+  coins:
   - 20000token
   - 200000000stake
   mnemonic: rug cotton ceiling olive cake october way spy million grain actress sponsor
 - name: damian
-  coins: 
+  coins:
   - 20000token
   - 200000000stake
-  mnemonic: mansion wing limit daughter allow fiscal attend planet viable giggle prison ready
-client:
-  openapi:
-    path: docs/static/openapi.yml
+  mnemonic: mansion wing limit daughter allow fiscal attend planet viable giggle prison
+    ready
 faucet:
   name: bob
   coins:
   - 5token
   - 100000stake
+client:
+  typescript:
+    path: ts-client
+  hooks:
+    path: react/src/hooks
+  openapi:
+    path: docs/static/openapi.yml
 validators:
 - name: alice
   bonded: 100000000stake
