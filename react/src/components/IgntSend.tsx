@@ -21,6 +21,7 @@ interface TxData {
   amounts: Array<Amount>;
   memo: string;
   fees: Array<Amount>;
+  relayerFee: Array<Amount>;
 }
 
 enum UI_STATE {
@@ -51,6 +52,7 @@ const initialState: State = {
     amounts: [],
     memo: "",
     fees: [],
+    relayerFee: [],
   },
   currentUIState: UI_STATE.SEND,
   advancedOpen: false,
@@ -194,6 +196,13 @@ export default function IgntSend(props: IgntSendProps) {
       return { ...oldState, tx };
     });
   };
+  const handleTxRelayerFeesUpdate = (selected: Amount[]) => {
+    setState((oldState) => {
+      const tx = oldState.tx;
+      tx.relayerFee = selected;
+      return { ...oldState, tx };
+    });
+  };
   const bootstrapTxAmount = () => {
     if (hasAnyBalance) {
       const firstBalance = balances.assets[0];
@@ -308,6 +317,15 @@ export default function IgntSend(props: IgntSendProps) {
                 }}
               />
             </div>
+
+            <div className="text-xs pb-2 mt-8">ICS-29 Relayer Fees</div>
+
+            <IgntAmountSelect
+              className="token-selector"
+              selected={state.tx.relayerFee}
+              balances={balances.assets as Amount[]}
+              update={handleTxRelayerFeesUpdate}
+            />
           </div>
         </>
       )}
