@@ -1,0 +1,59 @@
+version: 1
+accounts:
+- name: alice
+  coins:
+  - 1000token
+  - 1000000000stake
+- name: bob
+  coins:
+  - 500token
+  - 100000000stake
+- name: anna
+  coins:
+  - 20000token
+  - 200000000stake
+  mnemonic: antenna hen skate tooth during heart agent code exclude measure text math
+    time budget industry cage eagle prosper program enter cruise join tragic one
+- name: bo
+  coins:
+  - 20000token
+  - 200000000stake
+  mnemonic: uphold tube excess primary night armor circle puzzle pet memory empower
+    conduct blush hat glare tortoise into embody powder raise punch promote kidney
+    catalog
+- name: charlie
+  coins:
+  - 20000token
+  - 200000000stake
+  mnemonic: rug cotton ceiling olive cake october way spy million grain actress sponsor
+- name: damian
+  coins:
+  - 20000token
+  - 200000000stake
+  mnemonic: mansion wing limit daughter allow fiscal attend planet viable giggle prison
+    ready
+faucet:
+  name: bob
+  coins:
+  - 5token
+  - 100000stake
+  host: :4501
+genesis:
+  chain_id: mars
+validators:
+- name: alice
+  bonded: 100000000stake
+  app:
+    api:
+      address: :1318
+    grpc:
+      address: :9092
+    grpc-web:
+      address: :9093
+  config:
+    p2p:
+      laddr: :26658
+    rpc:
+      laddr: :26659
+      pprof_laddr: :6061
+  home: $HOME/.mars
