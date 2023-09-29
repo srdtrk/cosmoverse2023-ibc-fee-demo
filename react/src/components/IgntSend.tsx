@@ -62,6 +62,8 @@ export default function IgntSend(props: IgntSendProps) {
   const client = useClient();
   const sendMsgSend = client.CosmosBankV1Beta1.tx.sendMsgSend;
   const sendMsgTransfer = client.IbcApplicationsTransferV1.tx.sendMsgTransfer;
+  const msgTransfer = client.IbcApplicationsTransferV1.tx.msgTransfer;
+  const msgPayPacketFee = client.IbcApplicationsFeeV1.tx.msgPayPacketFee;
   const { address } = useAddressContext();
   const { balances } = useAssets(100);
 
@@ -126,9 +128,20 @@ export default function IgntSend(props: IgntSendProps) {
       amount: x.amount == "" ? "0" : x.amount,
     }));
 
+    const relayerFee: Array<Amount> = state.tx.relayerFee.map((x) => {
+      const intAmount = x.amount == "" ? 0 : parseInt(x.amount, 10);
+      const newAmount = Math.floor(intAmount / 2);
+      return {
+        denom: x.denom,
+        amount: newAmount.toString(),
+      };
+    });
+
     const memo = state.tx.memo;
 
     const isIBC = state.tx.ch !== "";
+
+    const isFee = state.tx.relayerFee.length > 0;
 
     let send;
 
@@ -151,12 +164,39 @@ export default function IgntSend(props: IgntSendProps) {
           token: state.tx.amounts[0],
         };
 
-        send = () =>
-          sendMsgTransfer({
-            value: payload,
-            fee: { amount: fee as Readonly<Amount>[], gas: "200000" },
-            memo,
+        if (isFee) {
+          const payFeeMsg = msgPayPacketFee({
+            value: {
+              signer: address,
+              sourcePortId: "transfer",
+              sourceChannelId: state.tx.ch,
+              relayers: [],
+              fee: {
+                recvFee: relayerFee,
+                ackFee: relayerFee,
+                timeoutFee: relayerFee,
+              },
+            },
           });
+
+          const transferMsg = msgTransfer({
+            value: payload,
+          });
+
+          send = () =>
+            client.signAndBroadcast(
+              [payFeeMsg, transferMsg],
+              { amount: fee as Readonly<Amount>[], gas: "200000" },
+              memo,
+            );
+        } else {
+          send = () =>
+            sendMsgTransfer({
+              value: payload,
+              fee: { amount: fee as Readonly<Amount>[], gas: "200000" },
+              memo,
+            });
+        }
       } else {
         send = () =>
           sendMsgSend({
