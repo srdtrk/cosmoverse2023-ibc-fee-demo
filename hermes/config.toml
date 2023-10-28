@@ -77,7 +77,7 @@ tx_confirmation = false
 # For more complex configuration, turn this off and use the CLI
 # to manually register the payee addresses.
 # [Default: false]
-auto_register_counterparty_payee = false
+auto_register_counterparty_payee = true
 
 # The REST section defines parameters for Hermes' built-in RESTful API.
 # https://hermes.informal.systems/rest.html
